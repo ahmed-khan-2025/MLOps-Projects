@@ -1,0 +1,42 @@
+{
+  "title": "Smart Temperature MLOps",
+  "schemaVersion": 39,
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Temperature",
+      "gridPos": {"x":0,"y":0,"w":12,"h":8},
+      "targets": [{"expr":"machine_temperature_celsius","legendFormat":"Temperature °C"}]
+    },
+    {
+      "type": "stat",
+      "title": "Overheat Prediction",
+      "gridPos": {"x":12,"y":0,"w":6,"h":8},
+      "targets": [{"expr":"machine_overheat_prediction"}]
+    },
+    {
+      "type": "stat",
+      "title": "Data Drift",
+      "gridPos": {"x":18,"y":0,"w":6,"h":8},
+      "targets": [{"expr":"ml_data_drift_detected"}]
+    },
+    {
+      "type": "stat",
+      "title": "Drift P-Value",
+      "gridPos": {"x":0,"y":8,"w":6,"h":6},
+      "targets": [{"expr":"ml_data_drift_p_value"}]
+    },
+    {
+      "type": "stat",
+      "title": "Predictions",
+      "gridPos": {"x":6,"y":8,"w":6,"h":6},
+      "targets": [{"expr":"ml_prediction_total"}]
+    },
+    {
+      "type": "stat",
+      "title": "Retraining",
+      "gridPos": {"x":12,"y":8,"w":6,"h":6},
+      "targets": [{"expr":"ml_retraining_total"}]
+    }
+  ]
+}
