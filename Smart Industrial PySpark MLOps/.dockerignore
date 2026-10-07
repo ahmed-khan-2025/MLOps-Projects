@@ -1,0 +1,11 @@
+.git
+.github
+__pycache__
+.pytest_cache
+.venv
+.env
+mlruns
+data/processed
+data/features
+models
+*.pyc

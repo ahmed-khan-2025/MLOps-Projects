@@ -1,0 +1,171 @@
+services:
+
+  # ============================================================
+  # PostgreSQL
+  # ============================================================
+  postgres:
+    image: postgres:17
+    container_name: smart-industrial-postgres
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-industrial}
+      POSTGRES_USER: ${POSTGRES_USER:-industrial}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-industrial}
+
+    ports:
+      - "5434:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-industrial} -d ${POSTGRES_DB:-industrial}"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  # ============================================================
+  # Apache Spark / PySpark
+  # ============================================================
+  spark:
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
+
+    container_name: smart-industrial-spark
+
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-industrial}
+      POSTGRES_USER: ${POSTGRES_USER:-industrial}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-industrial}
+
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./pyspark:/app/pyspark
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+      mlflow:
+        condition: service_started
+
+
+  # ============================================================
+  # MLflow
+  # ============================================================
+  mlflow:
+    image: python:3.12-slim
+
+    container_name: smart-industrial-mlflow
+
+    working_dir: /mlflow
+
+    command: >
+      sh -c "
+      pip install --no-cache-dir
+      mlflow==2.17.2
+      sqlalchemy==2.0.35 &&
+      mkdir -p /mlflow/artifacts &&
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --default-artifact-root file:///mlflow/artifacts
+      "
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - mlflow_data:/mlflow
+
+
+  # ============================================================
+  # FastAPI
+  # ============================================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+
+    container_name: smart-industrial-api
+
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-industrial}
+      POSTGRES_USER: ${POSTGRES_USER:-industrial}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-industrial}
+
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+
+    ports:
+      - "8001:8000"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+      mlflow:
+        condition: service_started
+
+
+  # ============================================================
+  # Prometheus
+  # ============================================================
+  prometheus:
+    image: prom/prometheus:v2.55.1
+
+    container_name: smart-industrial-prometheus
+
+    ports:
+      - "9090:9090"
+
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+    depends_on:
+      - api
+
+
+  # ============================================================
+  # Grafana
+  # ============================================================
+  grafana:
+    image: grafana/grafana:11.3.1
+
+    container_name: smart-industrial-grafana
+
+    ports:
+      - "3001:3000"
+
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+
+    depends_on:
+      - prometheus
+
+
+# ==============================================================
+# Persistent Volumes
+# ==============================================================
+volumes:
+
+  postgres_data:
+
+  mlflow_data:
+
+  grafana_data:

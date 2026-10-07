@@ -1,0 +1,9 @@
+apiVersion: 1
+providers:
+  - name: Smart Industrial
+    orgId: 1
+    folder: Smart Industrial
+    type: file
+    editable: true
+    options:
+      path: /etc/grafana/provisioning/dashboards
