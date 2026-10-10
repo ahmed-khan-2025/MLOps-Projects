@@ -1,0 +1,23 @@
+PROGRAM MAIN
+VAR
+    StateTimer : TON;
+    State : INT := 0;
+END_VAR
+
+StateTimer(IN := NOT StateTimer.Q, PT := T#20S);
+IF StateTimer.Q THEN
+    State := State + 1;
+    IF State > 2 THEN State := 0; END_IF;
+END_IF;
+
+CASE State OF
+0:
+    GVL.Voltage := 1.00; GVL.Current := 100.0; GVL.Frequency := 50.0;
+    GVL.ActivePower := 70.0; GVL.ReactivePower := 20.0; GVL.PowerFactor := 0.96; GVL.VoltageAngle := 0.0;
+1:
+    GVL.Voltage := 0.945; GVL.Current := 145.0; GVL.Frequency := 49.5;
+    GVL.ActivePower := 90.0; GVL.ReactivePower := 40.0; GVL.PowerFactor := 0.82; GVL.VoltageAngle := 4.0;
+2:
+    GVL.Voltage := 0.87; GVL.Current := 190.0; GVL.Frequency := 48.7;
+    GVL.ActivePower := 110.0; GVL.ReactivePower := 65.0; GVL.PowerFactor := 0.66; GVL.VoltageAngle := 8.0;
+END_CASE;

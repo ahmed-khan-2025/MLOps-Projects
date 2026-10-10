@@ -1,0 +1,9 @@
+apiVersion: 1
+providers:
+  - name: Industrial Grid
+    orgId: 1
+    folder: Industrial AI
+    type: file
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards
