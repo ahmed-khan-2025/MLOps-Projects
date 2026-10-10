@@ -50,13 +50,13 @@ The project demonstrates how industrial sensor data can be processed at scale, t
 
 **Industrial features include:**
 
-* Temperature
-* Vibration
-* Pressure
-* RPM
-* Current
-* Humidity
-* Operating hours
+- Temperature
+- Vibration
+- Pressure
+- RPM
+- Current
+- Humidity
+- Operating hours
 
 **Pipeline:**
 
@@ -106,6 +106,54 @@ Industrial Monitoring
 
 ---
 
+### 4. Industrial Grid Stability AI
+
+An Industrial AI and MLOps platform for electrical grid stability assessment, anomaly detection, and real-time monitoring.
+
+The system integrates **Beckhoff TwinCAT PLC, ADS/pyads, Python, PostgreSQL, machine learning, FastAPI, Prometheus, and Grafana**.
+
+**Focus:** Industrial AI, PLC integration, TwinCAT ADS, Python, Random Forest, Isolation Forest, stability risk assessment, PostgreSQL, Docker, and real-time monitoring.
+
+**Key capabilities:**
+
+- Grid stability classification: STABLE, WARNING, and UNSTABLE
+- Isolation Forest-based anomaly detection
+- Engineering-based stability risk scoring
+- Explainable ML predictions
+- PostgreSQL measurement and prediction persistence
+- FastAPI REST API
+- Prometheus metrics and Grafana dashboards
+- Docker Compose deployment
+- Real TwinCAT ADS acquisition and mock-data simulation
+
+**Architecture:**
+
+```text
+Beckhoff TwinCAT PLC
+        ↓
+ADS / pyads
+        ↓
+Python Collector
+        ↓
+PostgreSQL
+        ↓
+Random Forest Stability Classification
+        +
+Isolation Forest Anomaly Detection
+        ↓
+Engineering-Based Risk Assessment
+        ↓
+FastAPI
+        ↓
+Prometheus
+        ↓
+Grafana
+```
+
+**Model evaluation:** The Random Forest stability classifier achieved **89.8% accuracy on a held-out test set generated from a synthetic industrial dataset**. This result is based on synthetic data, not validation on a real electrical grid.
+
+---
+
 ## Project Progression
 
 The projects progressively explore different areas of production machine learning:
@@ -116,6 +164,8 @@ Smart Temperature MLOps
 Smart Industrial PySpark MLOps
         ↓
 Industrial AI Monitoring Platform
+        ↓
+Industrial Grid Stability AI
 ```
 
 The progression covers:
@@ -145,54 +195,61 @@ Industrial AI Systems
 ```
 
 ---
+
 ## Technology Stack
 
 ### Machine Learning
 
-* Python
-* scikit-learn
-* Random Forest
-* Feature Engineering
-* Model Evaluation
-* Model Retraining
+- Python
+- scikit-learn
+- Random Forest
+- Isolation Forest
+- Feature Engineering
+- Model Evaluation
+- Model Retraining
 
 ### MLOps
 
-* MLflow
-* Prometheus
-* Grafana
-* Docker
-* Model Monitoring
-* Data Drift Detection
-* Automated Retraining
+- MLflow
+- Prometheus
+- Grafana
+- Docker
+- Model Monitoring
+- Data Drift Detection
+- Automated Retraining
 
 ### Data Engineering
 
-* Apache Spark
-* PySpark
-* PostgreSQL
-* ETL Pipelines
-* Industrial Sensor Data
+- Apache Spark
+- PySpark
+- PostgreSQL
+- SQLAlchemy
+- ETL Pipelines
+- Industrial Sensor Data
 
 ### Industrial AI
 
-* OPC UA
-* Industrial IoT
-* Machine Monitoring
-* Predictive Analytics
-* Machine Failure Prediction
+- Beckhoff TwinCAT
+- ADS / pyads
+- OPC UA
+- Industrial IoT
+- PLC Data Acquisition
+- Machine Monitoring
+- Grid Stability Assessment
+- Predictive Analytics
+- Machine Failure Prediction
 
 ### Backend
 
-* FastAPI
-* REST APIs
-* Python
+- FastAPI
+- REST APIs
+- Python
 
 ### Frontend
 
-* React
-* Vite
-* Recharts
+- React
+- Vite
+- Recharts
 
 ---
 
@@ -209,7 +266,9 @@ MLOps-Projects/
 │
 ├── smart-industrial-pyspark-mlops/
 │
-└── industrial-ai-monitoring-platform/
+├── industrial-ai-monitoring-platform/
+│
+└── industrial-grid-stability-ai/
 ```
 
 The individual projects can also be maintained as standalone GitHub repositories.
@@ -286,16 +345,16 @@ This separation keeps the portfolio clear and avoids presenting the same project
 
 These projects demonstrate practical experience in:
 
-* Machine Learning Engineering
-* MLOps
-* Industrial AI
-* Python
-* Data Engineering
-* ML Deployment
-* ML Monitoring
-* Model Lifecycle Management
-* Industrial IoT
-* Production ML Systems
+- Machine Learning Engineering
+- MLOps
+- Industrial AI
+- Python
+- Data Engineering
+- ML Deployment
+- ML Monitoring
+- Model Lifecycle Management
+- Industrial IoT
+- Production ML Systems
 
 They are designed to demonstrate not only how to **train machine learning models**, but also how to **deploy, monitor, maintain, and operate ML systems in production-oriented environments**.
 
